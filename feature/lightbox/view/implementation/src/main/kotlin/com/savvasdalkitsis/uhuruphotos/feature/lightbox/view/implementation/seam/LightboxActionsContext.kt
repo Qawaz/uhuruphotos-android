@@ -63,6 +63,8 @@ import com.savvasdalkitsis.uhuruphotos.foundation.log.api.log
 import com.savvasdalkitsis.uhuruphotos.foundation.result.api.SimpleResult
 import com.savvasdalkitsis.uhuruphotos.foundation.seam.api.EffectHandler
 import com.savvasdalkitsis.uhuruphotos.foundation.strings.api.R.string
+import com.savvasdalkitsis.uhuruphotos.foundation.upload.api.usecase.UploadUseCase
+import com.savvasdalktsis.uhuruphotos.feature.download.domain.api.usecase.DownloadUseCase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -74,6 +76,7 @@ import kotlin.random.Random
 internal class LightboxActionsContext @Inject constructor(
     val mediaUseCase: MediaUseCase,
     val downloadUseCase: DownloadUseCase,
+    val uploadUseCase: UploadUseCase,
     val personUseCase: PersonUseCase,
     val feedUseCase: FeedUseCase,
     val memoriesUseCase: MemoriesUseCase,

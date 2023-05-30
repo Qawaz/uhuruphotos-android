@@ -25,7 +25,7 @@ dependencies {
     implementation project(":feature:server:view:api")
     implementation project(":feature:settings:domain:api")
     implementation project(":foundation:compose:api")
-    implementation project(":foundation:download:api")
+    implementation project(":feature:download:domain:api")
     implementation project(":foundation:icons:api")
     implementation project(":foundation:log:api")
     implementation project(":foundation:navigation:api")

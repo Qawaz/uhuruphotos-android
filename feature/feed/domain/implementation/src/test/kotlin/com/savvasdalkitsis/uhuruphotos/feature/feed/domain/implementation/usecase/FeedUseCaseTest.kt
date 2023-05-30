@@ -27,6 +27,7 @@ import com.savvasdalkitsis.uhuruphotos.feature.media.remote.domain.api.TestRemot
 import com.savvasdalkitsis.uhuruphotos.foundation.download.api.usecase.DownloadUseCase
 import com.savvasdalkitsis.uhuruphotos.foundation.group.api.model.Group
 import com.savvasdalkitsis.uhuruphotos.foundation.preferences.api.Preferences
+import com.savvasdalkitsis.uhuruphotos.feature.download.domain.api.usecase.DownloadUseCase
 import com.shazam.shazamcrest.MatcherAssert.assertThat
 import com.shazam.shazamcrest.matcher.Matchers.sameBeanAs
 import io.mockk.Called

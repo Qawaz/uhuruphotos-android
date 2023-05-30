@@ -34,6 +34,8 @@ data class LightboxState(
     val showTrashingConfirmationDialog: Boolean = false,
     val showFullySyncedDeleteConfirmationDialog: Boolean = false,
     val showRestorationConfirmationDialog: Boolean = false,
+    val showCannotUploadDialog: Boolean = false,
+    val showCannotCheckUploadStatusDialog: Boolean = false,
     val infoSheetHidden: Boolean = true,
     val showRestoreButton: Boolean = false,
     val missingPermissions: List<String> = emptyList(),

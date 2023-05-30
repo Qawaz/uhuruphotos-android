@@ -197,6 +197,7 @@ class MediaUseCase @Inject constructor(
     override suspend fun observeMediaItemDetails(id: MediaId<*>): Flow<MediaItemDetails> = when (id) {
         is Remote -> id.observeDetails()
         is Downloading -> id.remote.observeDetails()
+        is MediaId.Uploading -> id.local.observeDetails()
         is Local -> id.observeDetails()
         is MediaId.Group -> {
             val localDetails = id.findLocal?.observeDetails()
@@ -217,6 +218,7 @@ class MediaUseCase @Inject constructor(
     override suspend fun getMediaItemDetails(id: MediaId<*>): MediaItemDetails? = when (id) {
         is Remote -> id.getDetails()
         is Downloading -> id.remote.getDetails()
+        is MediaId.Uploading -> id.local.getDetails()
         is Local -> id.getDetails()
         is MediaId.Group -> {
             val remoteDetails = id.findRemote?.getDetails()
@@ -305,6 +307,7 @@ class MediaUseCase @Inject constructor(
         when (id) {
             is Remote -> refreshRemoteDetailsNowIfMissing(id)
             is Downloading -> refreshRemoteDetailsNowIfMissing(id.remote)
+            is MediaId.Uploading -> refreshLocalDetailsNowIfMissing(id.local)
             is Local -> refreshLocalDetailsNowIfMissing(id)
             is MediaId.Group -> {
                 val remote = id.findRemote?.let {
@@ -321,6 +324,7 @@ class MediaUseCase @Inject constructor(
         when (id) {
             is Remote -> refreshRemoteDetailsNow(id)
             is Downloading -> refreshRemoteDetailsNow(id.remote)
+            is MediaId.Uploading -> refreshLocalDetailsNowIfMissing(id.local)
             is Local -> refreshLocalDetailsNow(id)
             is MediaId.Group -> {
                 val remote = id.findRemote?.let {

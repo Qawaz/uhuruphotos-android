@@ -103,6 +103,8 @@ sealed class LightboxMutation(
             showTrashingConfirmationDialog = false,
             showRestorationConfirmationDialog = false,
             showFullySyncedDeleteConfirmationDialog = false,
+            showCannotUploadDialog = false,
+            showCannotCheckUploadStatusDialog = false,
         )
     })
 
@@ -193,6 +195,14 @@ sealed class LightboxMutation(
 
     data object ShowRestoreButton : LightboxMutation({
         it.copy(showRestoreButton = true)
+    })
+
+    data object ShowCannotUploadDialog : LightboxMutation({
+        it.copy(showCannotUploadDialog = true)
+    })
+
+    data object ShowCannotCheckUploadStatusDialog : LightboxMutation({
+        it.copy(showCannotCheckUploadStatusDialog = true)
     })
 }
 

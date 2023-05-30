@@ -27,7 +27,7 @@ dependencies {
     implementation project(":foundation:activity:api")
     implementation project(":foundation:compose:api")
     implementation project(":foundation:date:api")
-    implementation project(":foundation:download:api")
+    implementation project(":feature:download:domain:api")
     implementation project(":foundation:exif:api")
     implementation project(":foundation:icons:api")
     implementation project(':foundation:image:api')
@@ -52,6 +52,8 @@ dependencies {
     implementation project(':feature:person:domain:api')
     implementation project(':feature:person:view:api')
     implementation project(':feature:search:domain:api')
+    implementation project(":feature:upload:domain:api")
+    implementation project(":feature:upload:view:api")
     implementation(
             libs.accompanist.systemui,
             libs.androidx.compose.hilt.navigation,
