@@ -32,6 +32,7 @@ import com.savvasdalkitsis.uhuruphotos.feature.db.domain.api.media.remote.Remote
 import com.savvasdalkitsis.uhuruphotos.feature.db.domain.api.media.remote.RemoteMediaItemDetailsQueries
 import com.savvasdalkitsis.uhuruphotos.feature.db.domain.api.media.remote.RemoteMediaItemSummaryQueries
 import com.savvasdalkitsis.uhuruphotos.feature.db.domain.api.media.remote.RemoteMediaTrashQueries
+import com.savvasdalkitsis.uhuruphotos.feature.db.domain.api.media.upload.UploadingMediaItemsQueries
 import com.savvasdalkitsis.uhuruphotos.feature.db.domain.api.people.PeopleQueries
 import com.savvasdalkitsis.uhuruphotos.feature.db.domain.api.person.PersonQueries
 import com.savvasdalkitsis.uhuruphotos.feature.db.domain.api.search.SearchQueries
@@ -115,4 +116,7 @@ class DbModule {
 
     @Provides
     fun downloadingMediaItemsQueries(database: Database): DownloadingMediaItemsQueries = database.downloadingMediaItemsQueries
+
+    @Provides
+    fun uploadingMediaItemsQueries(database: Database): UploadingMediaItemsQueries = database.uploadingMediaItemsQueries
 }

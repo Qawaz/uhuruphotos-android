@@ -20,6 +20,7 @@ permissions = "1.2.0"
 pluto = "2.1.4"
 retrofit = "2.9.0"
 sqldelight = "1.5.5"
+upload = "4.7.0"
 
 [libraries]
 about = "com.mikepenz:aboutlibraries-compose:10.8.0"
@@ -130,6 +131,8 @@ sqldelight-coroutines = { module = "com.squareup.sqldelight:coroutines-extension
 sqldelight-gradle-plugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqldelight" }
 sqldelight-jvm = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 turbine = "app.cash.turbine:turbine:1.0.0"
+upload-core = { module = "net.gotev:uploadservice", version.ref = "upload" }
+upload-okhttp = { module = "net.gotev:uploadservice-okhttp", version.ref = "upload" }
 urlvalidator = "commons-validator:commons-validator:1.7"
 zoomable = "com.mxalbert.zoomable:zoomable:1.6.1"
 
@@ -176,4 +179,8 @@ pluto-debug = [
 pluto-release = [
     "pluto-release-core",
     "pluto-release-plugins",
+]
+upload = [
+    "upload-core",
+    "upload-okhttp",
 ]
