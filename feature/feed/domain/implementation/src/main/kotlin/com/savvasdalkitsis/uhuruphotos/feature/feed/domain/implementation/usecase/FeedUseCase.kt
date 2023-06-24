@@ -37,11 +37,13 @@ import com.savvasdalkitsis.uhuruphotos.foundation.group.api.model.mapValues
 import com.savvasdalkitsis.uhuruphotos.foundation.preferences.api.Preferences
 import com.savvasdalkitsis.uhuruphotos.foundation.preferences.api.observe
 import com.savvasdalkitsis.uhuruphotos.foundation.preferences.api.set
+import com.savvasdalkitsis.uhuruphotos.foundation.upload.api.usecase.UploadUseCase
 import com.savvasdalktsis.uhuruphotos.feature.download.domain.api.usecase.DownloadUseCase
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import se.ansman.dagger.auto.AutoBind
 import javax.inject.Inject
@@ -53,27 +55,37 @@ internal class FeedUseCase @Inject constructor(
     private val mediaUseCase: MediaUseCase,
     private val feedImmediateWorkScheduler: FeedImmediateWorkScheduler,
     private val downloadUseCase: DownloadUseCase,
+    private val uploadUseCase: UploadUseCase,
     private val preferences: Preferences,
 ) : FeedUseCase {
 
     private val key = "feedDisplay"
 
     override fun observeFeed(): Flow<List<MediaCollection>> =
-        combine(observeRemoteMediaFeed(), observeLocalMediaFeed(), observeDownloading(), ::mergeRemoteWithLocalMedia)
+        combine(
+            observeRemoteMediaFeed(),
+            observeLocalMediaFeed(),
+            observeDownloading(),
+            observeUploading(),
+            ::mergeRemoteWithLocalMedia
+        )
 
     override suspend fun getFeed(): List<MediaCollection> = mergeRemoteWithLocalMedia(
-        getRemoteMediaFeed(), getLocalMediaFeed(), getDownloading(),
+        getRemoteMediaFeed(), getLocalMediaFeed(), getDownloading(), getUploading()
     )
 
     private fun mergeRemoteWithLocalMedia(
         allRemoteDays: List<MediaCollection>,
         allLocalMedia: List<MediaItem>,
         mediaBeingDownloaded: Set<String>,
+        mediaBeingUploaded: Set<Long>,
     ): List<MediaCollection> {
         val allLocalDays = allLocalMedia.groupBy { it.displayDayDate }
         val combined = mergeLocalMediaIntoExistingRemoteDays(allRemoteDays, allLocalDays) +
                 remainingLocalDays(allRemoteDays, allLocalDays)
-        return combined.sortedByDescending { it.unformattedDate }.markDownloading(mediaBeingDownloaded)
+        return combined.sortedByDescending { it.unformattedDate }
+            .markDownloading(mediaBeingDownloaded)
+            .markUploading(mediaBeingUploaded)
     }
 
     private fun List<MediaCollection>.markDownloading(
@@ -86,6 +98,22 @@ internal class FeedUseCase @Inject constructor(
                 && id.value in inProgress
             ) {
                 mediaItem.copy(id = MediaId.Downloading(id.value, id.isVideo, id.serverUrl))
+            } else {
+                mediaItem
+            }
+        })
+    }
+
+    private fun List<MediaCollection>.markUploading(
+        inProgress: Set<Long>,
+    ): List<MediaCollection> = map { collection ->
+        collection.copy(mediaItems = collection.mediaItems.map { mediaItem ->
+            val id = mediaItem.id
+            if (mediaItem is MediaItemInstance
+                && id is MediaId.Local
+                && id.value in inProgress
+            ) {
+                mediaItem.copy(id = MediaId.Uploading(id.value, id.isVideo, id.contentUri, id.thumbnailUri))
             } else {
                 mediaItem
             }
@@ -190,9 +218,9 @@ internal class FeedUseCase @Inject constructor(
             }
         }
 
-    private fun observeDownloading() = downloadUseCase.observeDownloading().map {
-        it
-    }
+    private fun observeDownloading() = downloadUseCase.observeDownloading()
+
+    private fun observeUploading() = uploadUseCase.observeUploading()
 
     private fun observeRemoteMediaFeed() = feedRepository.observeRemoteMediaCollectionsByDate()
         .distinctUntilChanged()
@@ -216,5 +244,7 @@ internal class FeedUseCase @Inject constructor(
     }
 
     private suspend fun getDownloading(): Set<String> = downloadUseCase.getDownloading()
+
+    private suspend fun getUploading(): Set<Long> = uploadUseCase.observeUploading().first()
 
 }
