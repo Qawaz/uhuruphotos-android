@@ -144,7 +144,7 @@ class FeedDownloadWorkerTest {
                 context,
                 R.string.refreshing_feed,
                 any(),
-                NotificationChannels.JOBS_CHANNEL_ID
+                NotificationChannels.Jobs.id,
             )
         } returns foregroundInfo
 

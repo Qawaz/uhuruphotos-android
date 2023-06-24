@@ -20,4 +20,6 @@ import android.app.Application
 interface ApplicationCreated {
 
     fun onAppCreated(app: Application)
+
+    fun priority(): Int = 0
 }

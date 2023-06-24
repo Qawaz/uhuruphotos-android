@@ -15,6 +15,7 @@ limitations under the License.
  */
 package com.savvasdalkitsis.uhuruphotos.feature.media.remote.domain.api.usecase
 
+import com.github.michaelbull.result.Result
 import com.savvasdalkitsis.uhuruphotos.feature.db.domain.api.entities.media.DbRemoteMediaItemDetails
 import com.savvasdalkitsis.uhuruphotos.feature.db.domain.api.entities.media.DbRemoteMediaItemSummary
 import com.savvasdalkitsis.uhuruphotos.feature.media.remote.domain.api.service.model.RemoteMediaCollection
@@ -63,4 +64,6 @@ interface RemoteMediaUseCase {
         completeAlbumProcessor: suspend (RemoteMediaCollection.Complete) -> Unit = {},
         clearSummariesBeforeInserting: Boolean = true,
     ): SimpleResult
+
+    suspend fun exists(hash: String): Result<Boolean, Throwable>
 }

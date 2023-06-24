@@ -29,6 +29,7 @@ data class OpenLightbox(
             LightboxNavigationRoute(
                 id = id,
                 lightboxSequenceDataSource = lightboxSequenceDataSource,
+                showMediaSyncState = true,
             )
         )
     }
